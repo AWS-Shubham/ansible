@@ -1,4 +1,7 @@
 # Ansible
+
+## This repository covers all the necessary commands you need when you use Ansible.
+
 #### What is Ansible?
 Ansible is an open-source automation tool developed by Red Hat, designed to automate tasks such as configuration management, application deployment, and IT orchestration. It is known for its simplicity, ease of use, and powerful capabilities that allow users to manage large-scale IT environments efficiently. Ansible uses a simple, human-readable language (YAML) to describe automation jobs, making it accessible even to those who are not experienced programmers.
 ## Installation
@@ -48,6 +51,16 @@ Ansible is an open-source automation tool developed by Red Hat, designed to auto
         ansible all -m copy -a "src=/path/to/local/file dest=/path/to/remote/file"
 ##### 5. Install a package on all hosts:
         ansible all -m apt -a "name=package_name state=present" -b
+### Ad-hoc Commands
+#### Run a Command on All Hosts:
+        ansible all -a "command"
+#### Run a Command with sudo:
+        ansible all -a "command" -b
+#### Copy a File to All Hosts:
+        ansible all -m copy -a "src=/path/to/local/file dest=/path/to/remote/file"
+#### Gather Facts about All Hosts:
+        ansible all -m setup
+
 ## Playbooks
 ### Writing and running a simple playbook:
 #### Example playbook to update and upgrade packages:
@@ -66,11 +79,21 @@ Ansible is an open-source automation tool developed by Red Hat, designed to auto
                 upgrade: dist
               when: update_cache.changed
 #### Running the playbook:
-        ansible-playbook update_upgrade.yml
+            ansible-playbook update_upgrade.yml
+#### Run a Playbook with Specific Inventory:
+           ansible-playbook -i inventory_file playbook.yml
+#### Check Playbook Syntax:
+           ansible-playbook playbook.yml --syntax-check
+#### Dry Run a Playbook:
+          ansible-playbook playbook.yml --check
+
 ## Roles
 ### Creating and using roles:
 #### Creating a role:
-        ansible-galaxy init myrole
+        ansible-galaxy init role_name
+#### Install Roles from Galaxy:
+        ansible-galaxy install role_name
+
 #### Directory structure of a role:
         myrole/
         ├── README.md
@@ -129,3 +152,15 @@ Ansible is an open-source automation tool developed by Red Hat, designed to auto
           version: 3.0.0
 ### Installing roles from requirements file:
       ansible-galaxy install -r requirements.yml
+## Utility Commands
+#### Generate SSH Keys:
+      ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa
+#### Copy SSH Key to Remote Host:
+      ssh-copy-id user@remote_host
+## Miscellaneous Commands
+#### Display Ansible Configuration:
+      ansible-config dump
+#### Run Ad-hoc Command with Specific Inventory:
+      ansible -i inventory_file all -m ping
+#### Run Command with Specific User:
+      ansible all -a "command" -u username
